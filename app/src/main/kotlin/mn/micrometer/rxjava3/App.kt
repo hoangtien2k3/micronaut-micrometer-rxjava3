@@ -48,12 +48,12 @@ interface BookApi {
 
     @Post
     @SingleResult
-    @Timed //Works as return type is Publisher
+    @Timed //Works as a return type is Publisher
     fun post(book: Book): Publisher<Book>
 
     @Put
     @SingleResult
-    @Timed //Works as return type is Publisher
+    @Timed //Works as a return type is Publisher
     fun put(book: Book): Publisher<Book>
 }
 
