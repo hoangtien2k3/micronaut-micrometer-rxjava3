@@ -25,6 +25,14 @@ fun main(args: Array<String>) {
 
 data class Book(val id: Long, val title: String)
 
+/**
+ * Observable: -> emitter 0..n values and not support backpressure (cac luong xu ly du lieu it items)
+ * Flowable: -> Flux (ho tro - backpressure, xu ly nhieu du lieu, doc tu database, network I/O, du lieu lon
+ * Single: -> Mono (phat ra 1 items hoac loi, phu hop voi cac API call 1 ketqua)
+ * Maybe: -> phat ra o..1 items hoac loi (ket qua co the null hoac empty)
+ * Completable: chi thong bao hoan thanh hoac loi, khong phat ra items nao, phu hop voi cac operation khong can return value
+ *
+ * */
 interface BookApi {
     @Get("/{id}")
     @Timed //Doesn't work as Single cannot be converted to Mono
@@ -54,7 +62,7 @@ interface BookClient: BookApi
 
 @Controller("books")
 class BookController: BookApi {
-    private val books = ConcurrentHashMap<Long, Book>().also { it[1L] = Book(1L, "Test") }
+    private val books = ConcurrentHashMap<Long, Book>().also { it[1L] = Book(1L, "Micronaut Framework Test") }
 
     override fun get(id: Long): Single<Book> {
         return books[id]?.let { Single.just(it) } ?: Single.error(Throwable("not found"))
